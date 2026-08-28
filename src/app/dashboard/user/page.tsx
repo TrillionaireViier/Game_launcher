@@ -6,9 +6,10 @@ import Sidebar from '@/components/Sidebar';
 import ChatBox from '@/components/ChatBox';
 
 export default function UserDashboard() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
   const [activeChat, setActiveChat] = useState<string | null>(null);
+  const [selectedGame, setSelectedGame] = useState<number | null>(null);
 
   if (!user || user.role !== 'user') {
     return (
@@ -36,7 +37,16 @@ export default function UserDashboard() {
         </div>
 
         <div className="content-wrapper">
-          <h2 className="section-title">Welcome back, {user.email.split('@')[0]}</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h2 className="section-title" style={{ margin: 0 }}>Welcome back, {user.email.split('@')[0]}</h2>
+            <button 
+              className="btn-play" 
+              style={{ background: 'transparent', border: '1px solid var(--accent-primary)', color: 'var(--accent-primary)', padding: '0.5rem 1rem' }} 
+              onClick={() => { logout(); router.push('/login'); }}
+            >
+              Logout
+            </button>
+          </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
             
@@ -45,11 +55,30 @@ export default function UserDashboard() {
               <div style={{ background: 'var(--bg-card)', padding: '2rem', borderRadius: '16px' }}>
                 <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--accent-secondary)' }}>Recently Played</h3>
                 <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '1rem' }}>
-                  {[1,2,3].map(i => (
-                    <div key={i} onClick={() => router.push('/library')} style={{ minWidth: '150px', background: 'var(--bg-panel)', borderRadius: '8px', padding: '1rem', cursor: 'pointer', transition: 'transform 0.2s' }} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                      <div style={{ height: '100px', background: 'url(https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80) center/cover', borderRadius: '4px', marginBottom: '1rem' }}></div>
-                      <p style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>Game {i}</p>
-                      <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>42 hrs played</p>
+                  {[
+                    { id: 1, title: 'Game 1', playtime: '42 hrs played', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80' },
+                    { id: 2, title: 'Game 2', playtime: '12 hrs played', image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b7738?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80' },
+                    { id: 3, title: 'Game 3', playtime: '150 hrs played', image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80' }
+                  ].map(game => (
+                    <div 
+                      key={game.id} 
+                      onClick={() => setSelectedGame(game.id)} 
+                      style={{ 
+                        minWidth: '150px', 
+                        background: 'var(--bg-panel)', 
+                        borderRadius: '8px', 
+                        padding: '1rem', 
+                        cursor: 'pointer', 
+                        transition: 'transform 0.2s, box-shadow 0.2s',
+                        border: selectedGame === game.id ? '2px solid var(--accent-secondary)' : '2px solid transparent',
+                        boxShadow: selectedGame === game.id ? '0 0 10px var(--accent-secondary)' : 'none'
+                      }} 
+                      onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} 
+                      onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                    >
+                      <div style={{ height: '100px', background: `url(${game.image}) center/cover`, borderRadius: '4px', marginBottom: '1rem' }}></div>
+                      <p style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{game.title}</p>
+                      <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>{game.playtime}</p>
                     </div>
                   ))}
                 </div>
@@ -80,13 +109,17 @@ export default function UserDashboard() {
                 <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--accent-secondary)' }}>Friends Online</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {['Alex_Pro', 'SniperG', 'Nova001'].map((friend, i) => (
-                    <div key={i} onClick={() => setActiveChat(friend)} style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer', padding: '0.5rem', borderRadius: '4px', transition: 'background 0.2s' }} className="friend-item">
-                      <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: i===0 ? '#10b981' : 'var(--accent-primary)' }}></div>
-                      <div style={{ flex: 1 }}>
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.5rem', borderRadius: '4px', transition: 'background 0.2s' }} className="friend-item">
+                      <div 
+                        style={{ width: '30px', height: '30px', borderRadius: '50%', background: i===0 ? '#10b981' : 'var(--accent-primary)', cursor: 'pointer' }} 
+                        onClick={() => router.push(`/profile/${friend}`)}
+                        title="View Profile"
+                      ></div>
+                      <div style={{ flex: 1, cursor: 'pointer' }} onClick={() => router.push(`/profile/${friend}`)} title="View Profile">
                         <p style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{friend}</p>
                         <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>{i===0 ? 'In Game: Space Recon' : 'Online'}</p>
                       </div>
-                      <div style={{ color: 'var(--text-secondary)' }}>💬</div>
+                      <div style={{ color: 'var(--text-secondary)', cursor: 'pointer' }} onClick={() => setActiveChat(friend)} title="Chat">💬</div>
                     </div>
                   ))}
                 </div>
