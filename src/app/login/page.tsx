@@ -19,8 +19,8 @@ export default function Login() {
               onClick={() => login('player@davial.com')}
               className="btn-play" 
               style={{ padding: '1rem', fontSize: '1.1rem', background: 'transparent', border: '2px solid #3b82f6', color: '#3b82f6' }}
-              onMouseOver={(e) => e.currentTarget.style.background = '#3b82f6'}
-              onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+              onMouseOver={(e) => { e.currentTarget.style.background = '#3b82f6'; e.currentTarget.style.color = 'white'; }}
+              onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#3b82f6'; }}
             >
               👤 LOGIN AS PLAYER
             </button>
