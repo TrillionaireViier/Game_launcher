@@ -1,3 +1,6 @@
+import { AuthProvider } from '@/context/AuthContext';
+import './globals.css';
+
 export const metadata = {
   title: 'Davial Game Launcher',
   description: 'Premium gaming platform and launcher',
@@ -10,7 +13,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   )
 }

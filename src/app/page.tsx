@@ -49,6 +49,7 @@ export default function Launcher() {
       <main className="main-content">
         <div className="topbar">
           <input type="text" className="search-bar" placeholder="Search games..." />
+          <a href="/login" style={{ color: 'white', background: 'rgba(255,255,255,0.1)', padding: '0.5rem 1rem', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.2)' }}>Login / Sign Up</a>
         </div>
 
         <div className="content-wrapper">
