@@ -46,7 +46,7 @@ export default function UserDashboard() {
                 <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--accent-secondary)' }}>Recently Played</h3>
                 <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '1rem' }}>
                   {[1,2,3].map(i => (
-                    <div key={i} style={{ minWidth: '150px', background: 'var(--bg-panel)', borderRadius: '8px', padding: '1rem' }}>
+                    <div key={i} onClick={() => router.push('/library')} style={{ minWidth: '150px', background: 'var(--bg-panel)', borderRadius: '8px', padding: '1rem', cursor: 'pointer', transition: 'transform 0.2s' }} onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}>
                       <div style={{ height: '100px', background: 'url(https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80) center/cover', borderRadius: '4px', marginBottom: '1rem' }}></div>
                       <p style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>Game {i}</p>
                       <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>42 hrs played</p>
