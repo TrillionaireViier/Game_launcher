@@ -18,7 +18,7 @@ export default function Community() {
                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--accent-primary)' }}></div>
                 <div>
                   <h4 style={{ margin: 0 }}>Cyber_Ninja</h4>
-                  <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Just earned the "Neon God" achievement in Cyber Hunter 2077!</p>
+                  <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Just earned the &quot;Neon God&quot; achievement in Cyber Hunter 2077!</p>
                 </div>
               </div>
               <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" style={{ width: '100%', borderRadius: '4px' }} alt="Gameplay" />

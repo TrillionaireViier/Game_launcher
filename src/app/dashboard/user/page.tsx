@@ -1,10 +1,14 @@
 'use client';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import Sidebar from '@/components/Sidebar';
+import ChatBox from '@/components/ChatBox';
 
 export default function UserDashboard() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
+  const [activeChat, setActiveChat] = useState<string | null>(null);
 
   if (!user || user.role !== 'user') {
     return (
@@ -20,32 +24,7 @@ export default function UserDashboard() {
   return (
     <div className="launcher-layout">
       {/* Sidebar Navigation */}
-      <aside className="sidebar">
-        <div className="brand"><span className="brand-icon">⚡</span> DAVIAL</div>
-        
-        <nav className="nav-links">
-          <div className="nav-item active">👤 Profile</div>
-          <div className="nav-item">🎮 My Library</div>
-          <div className="nav-item">🏆 Achievements</div>
-          <div className="nav-item">💰 Wallet ($45.00)</div>
-          <div className="nav-item">👥 Friends List (3 Online)</div>
-          <div className="nav-item">🛒 Shopping Cart (1)</div>
-          <div className="nav-item">❤️ Wishlist</div>
-          <div className="nav-item">⬇️ Downloads (Idle)</div>
-          <div className="nav-item">☁️ Cloud Saves (ON)</div>
-          <div className="nav-item">📰 Activity Feed</div>
-          <div className="nav-item">🔒 Security & 2FA</div>
-          <div className="nav-item">💻 System Requirements</div>
-        </nav>
-
-        <div className="user-profile" onClick={logout} style={{ marginTop: 'auto', border: '1px solid var(--accent-primary)' }}>
-          <div className="avatar"></div>
-          <div className="user-info">
-            <h4>{user.email.split('@')[0]}</h4>
-            <p style={{ color: 'var(--accent-primary)' }}>Logout</p>
-          </div>
-        </div>
-      </aside>
+      <Sidebar />
 
       {/* Main Content */}
       <main className="main-content">
@@ -101,7 +80,7 @@ export default function UserDashboard() {
                 <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--accent-secondary)' }}>Friends Online</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {['Alex_Pro', 'SniperG', 'Nova001'].map((friend, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer', padding: '0.5rem', borderRadius: '4px', transition: 'background 0.2s' }}>
+                    <div key={i} onClick={() => setActiveChat(friend)} style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer', padding: '0.5rem', borderRadius: '4px', transition: 'background 0.2s' }} className="friend-item">
                       <div style={{ width: '30px', height: '30px', borderRadius: '50%', background: i===0 ? '#10b981' : 'var(--accent-primary)' }}></div>
                       <div style={{ flex: 1 }}>
                         <p style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>{friend}</p>
@@ -117,6 +96,8 @@ export default function UserDashboard() {
           </div>
         </div>
       </main>
+      
+      {activeChat && <ChatBox friend={activeChat} onClose={() => setActiveChat(null)} />}
     </div>
   );
 }
